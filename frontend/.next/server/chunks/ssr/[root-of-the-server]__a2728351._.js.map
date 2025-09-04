@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 11, "column": 0}, "map": {"version":3,"sources":["file:///C:/Interview/interview/src/app/page.tsx"],"sourcesContent":["import {\n  Card,\n  CardAction,\n  CardContent,\n  CardDescription,\n  CardFooter,\n  CardHeader,\n  CardTitle,\n} from \"@/components/ui/card\"\n\nexport default function Home() {\n  return (\n    <div>\n      \n    </div>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAUe,SAAS;IACtB,qBACE,8OAAC;;;;;AAIL","debugId":null}}]
+}
