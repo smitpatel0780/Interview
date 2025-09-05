@@ -13,6 +13,7 @@ import { toast } from "sonner"
 import { ChevronDown } from "lucide-react"
 import RecordsTable from '@/components/app/home/table'
 import { fetchRegistrations, createRegistration, updateRegistration } from "@/lib/api"
+import { Registration } from "@/types/registration"
 
 const stateDistrictData: Record<string, string[]> = {
   Gujarat: ["Ahmedabad", "Surat", "Rajkot", "Vadodara"],
@@ -21,12 +22,12 @@ const stateDistrictData: Record<string, string[]> = {
 }
 
 export default function Home() {
- const [districts, setDistricts] = useState<string[]>([])
-  const [records, setRecords] = useState<any[]>([])
+  const [districts, setDistricts] = useState<string[]>([])
+  const [records, setRecords] = useState<Registration[]>([])
   const [editIndex, setEditIndex] = useState<number | null>(null)
   const [editId, setEditId] = useState<number | null>(null)
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Registration>({
     firstName: "",
     lastName: "",
     phone: "",
@@ -38,7 +39,6 @@ export default function Home() {
     zip: "",
   })
 
-  // 🔹 Load records from API on mount
   useEffect(() => {
     loadRecords()
   }, [])
@@ -102,7 +102,7 @@ export default function Home() {
   }
 
   const validateForm = () => {
-    const { firstName, lastName, phone, email, address, state, district, city, zip } = formData
+    const { phone, email, zip } = formData
 
     const requiredFields: Record<string, string> = {
       firstName: "First name",
@@ -117,7 +117,7 @@ export default function Home() {
     }
 
     for (const [key, label] of Object.entries(requiredFields)) {
-      if (!formData[key as keyof typeof formData]) {
+      if (!formData[key as keyof Registration]) {
         toast.error(`${label} is required.`)
         return false
       }
@@ -157,16 +157,20 @@ export default function Home() {
       }
       await loadRecords()
       resetForm()
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong")
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        toast.error(err.message)
+      } else {
+        toast.error("Something went wrong")
+      }
     }
   }
 
-  const handleEdit = (row: any, index: number) => {
+  const handleEdit = (row: Registration, index: number) => {
     setFormData(row)
     setDistricts(stateDistrictData[row.state] || [])
     setEditIndex(index)
-    setEditId(row.id) 
+    setEditId(row.id ?? null)
   }
 
   return (

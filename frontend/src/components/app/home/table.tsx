@@ -7,10 +7,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Pencil } from "lucide-react"
+import { Registration } from "@/types/registration"
 
 type Props = {
-  data: any[];
-  onEdit: (row: any, index: number) => void;
+  data: Registration[]
+  onEdit: (row: Registration, index: number) => void
 }
 
 export default function RecordsTable({ data, onEdit }: Props) {
@@ -21,7 +22,7 @@ export default function RecordsTable({ data, onEdit }: Props) {
 
   const filteredData = useMemo(() => {
     return data.filter((row) =>
-      Object.values(row).some((val: any) =>
+      Object.values(row).some((val: unknown) =>
         val?.toString().toLowerCase().includes(search.toLowerCase())
       )
     )
@@ -185,13 +186,13 @@ export default function RecordsTable({ data, onEdit }: Props) {
 }
 
 
-function TruncatedCell({ value }: { value: string }) {
+function TruncatedCell({ value }: { value: string | number | undefined }) {
   return (
     <TableCell
       className="truncate max-w-[150px] py-2.5 px-2 text-sm"
-      title={value}
+      title={String(value ?? "")}
     >
-      {value}
+      {String(value ?? "")}
     </TableCell>
-  );
+  )
 }
